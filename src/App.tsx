@@ -5,9 +5,12 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  // const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
     <>
+
+
       <div className="banner">
         <button className="hamburger-menu">☰</button>
         <h1 className="banner-heading">MotoGP Info</h1>
