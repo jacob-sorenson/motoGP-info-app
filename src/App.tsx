@@ -8,6 +8,11 @@ function App() {
 
   return (
     <>
+      <div className="banner">
+        <button className="hamburger-menu">☰</button>
+        <h1 className="banner-heading">MotoGP Info</h1>
+        <button className="login-button">Login</button>
+      </div>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

@@ -40,3 +40,47 @@
 .read-the-docs {
   color: #888;
 }
+
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #282c34;
+  color: white;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.hamburger-menu {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.banner-heading {
+  margin: 0;
+  font-size: 20px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.login-button {
+  background-color: #61dafb;
+  border: none;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 30px; /* Adds space between the button and the edge */
+}
+
+.login-button:hover {
+  background-color: #21a1f1;
+}
