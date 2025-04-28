@@ -37,22 +37,3 @@ export default function Drawer({ isOpen, onClose, children }: DrawerProps) {
         </>
     )
 }
-
-
-
-
-// export default function Drawer({ isOpen, onClose, children }: DrawerProps) {
-//     return (
-//         <div className={`fixed inset-0 z-50 transition-transform transform ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-//             <div className="absolute inset-0 bg-black opacity-50" onClick={onClose}></div>
-//                 <div className="relative w-64 bg-white h-full shadow-lg">
-//                     <button className="absolute top-4 right-4 text-gray-600" onClick={onClose}>
-//                         <FiX size={24} />
-//                     </button>
-//                 <div className="p-4">
-//                     {children}
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }

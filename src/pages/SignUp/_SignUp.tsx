@@ -1,29 +1,33 @@
-// ./pages/About.js
 
 import { useState } from 'react'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../firebase'
 
-export function Login() {
+export function SignUp() {
+    console.log('SignUp component loaded')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const auth = getAuth()
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+
         try {
-            await signInWithEmailAndPassword(auth, email, password)
+            await createUserWithEmailAndPassword(auth, email, password)
             console.log('User signed in')
         } catch (error) {
             console.error('Error signing in:', error)
         }
+
     }
+
 
 
     return (
         <> 
 
-            <div>Login Page</div>
+            <div>SignUp Page</div>
+
+
             <form onSubmit={handleSubmit} className="letter-form">
                 <div>
                     <input
@@ -32,6 +36,7 @@ export function Login() {
                         value={email}
                         onChange={e => setEmail(e.target.value)}/>
                 </div>
+
                 <div>
                     <input
                         type="password"
@@ -40,10 +45,9 @@ export function Login() {
                         onChange={e => setPassword(e.target.value)}/>
                 </div>
                 <div>
-                    <button>Sign In</button>
+                    <button type='submit'>Sign In</button>
                 </div>
             </form>
-
         </>
     );
 

@@ -1,8 +1,8 @@
 import { Routes, Route, } from 'react-router-dom'
 import './App.css'
-import { Login } from './pages/Login/_Login'
 import { Navbar } from './components/Navbar'
-
+import { Login } from './pages/Login/_Login'
+import { SignUp } from './pages/SignUp/_SignUp'
 
 // remove eventually
 import reactLogo from './assets/react.svg'
@@ -21,6 +21,7 @@ function App() {
         <Route path="/" element={<h2>Welcome to MotoGP Info</h2>} />
         <Route path="/riders" element={<h2>Riders</h2>} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/Signup" element={<SignUp />} />
       </Routes>
 
       <div>
