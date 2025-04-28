@@ -9,9 +9,9 @@
 
 ## 🛠️ Features
 ### Authentication
-- [ ] Set up Firebase Authentication
-- [ ] Create login page
-- [ ] Create signup page
+- [x] Set up Firebase Authentication
+- [x] Create login page
+- [x] Create signup page
 - [ ] Handle auth errors
 
 ### User Dashboard

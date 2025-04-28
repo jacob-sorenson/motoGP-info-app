@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { auth } from '../firebase';
 import Drawer from './Drawer';
 
 
 export function Navbar() {
     const navigate = useNavigate()
+    const { user, loading } = useAuth()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     return(
@@ -13,7 +16,20 @@ export function Navbar() {
             <div className="banner">
             <button className="hamburger-menu" onClick={()=>setIsMenuOpen(true)} >☰</button>
             <h1 className="banner-heading">MotoGP Info</h1>
-            <button className="login-button" onClick={() => navigate('/Login')}>Login</button>
+
+            {/* show nothing while we’re checking auth */}
+            {loading ? null : user ? (
+                <>
+                    <span className="user-email">{user.email}</span>
+                    <button className="login-button" onClick={() => auth.signOut()}>
+                    Sign Out
+                    </button>
+                </>
+            ) : (
+                <button className="login-button" onClick={() => navigate('/login')}>
+                Login
+                </button>
+            )}
             </div>
 
             <div> 
