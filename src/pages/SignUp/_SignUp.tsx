@@ -1,11 +1,10 @@
 
 import { useState } from 'react'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../firebase'
-import { Link } from 'react-router-dom'
 
-export function Login() {
-    console.log('Login component loaded')
+export function SignUp() {
+    console.log('SignUp component loaded')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -13,10 +12,10 @@ export function Login() {
         e.preventDefault()
 
         try {
-            await signInWithEmailAndPassword(auth, email, password)
+            await createUserWithEmailAndPassword(auth, email, password)
             console.log('User signed in')
         } catch (error) {
-            console.error('Error signing up:', error)
+            console.error('Error signing in:', error)
         }
 
     }
@@ -26,7 +25,7 @@ export function Login() {
     return (
         <> 
 
-            <div>Login Page</div>
+            <div>SignUp Page</div>
 
 
             <form onSubmit={handleSubmit} className="letter-form">
@@ -49,8 +48,6 @@ export function Login() {
                     <button type='submit'>Sign In</button>
                 </div>
             </form>
-            <p>If you do not have an account please make one:</p>
-            <Link to="/SignUp">Sign Up</Link>
         </>
     );
 
