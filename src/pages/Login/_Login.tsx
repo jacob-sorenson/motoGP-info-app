@@ -1,9 +1,9 @@
 
 import { useState } from 'react'
-import { replace, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../firebase'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 export function Login() {
     console.log('Login component loaded')
