@@ -2,11 +2,8 @@ import { Routes, Route, } from 'react-router-dom'
 import './App.css'
 import { Navbar } from './components/Navbar'
 import { Login } from './pages/Login/_Login'
-import { SignUp } from './pages/SignUp/_SignUp'
-
-// remove eventually
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import { SignUp } from './pages/SignUp/_SignUp'
+import { RaceEntryPage } from './pages/DataEntry/RaceEntryPage'
 import { MotoGPTable } from './components/MotoGPTable'
 
 function App() {
@@ -14,40 +11,30 @@ function App() {
 
   return (
     <>
-    <div>
-      
-      <Navbar />
-
-      <Routes>
-        <Route path="/" element={<h2>Welcome to MotoGP Info</h2>} />
-        <Route path="/riders" element={<h2>Riders</h2>} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Signup" element={<SignUp />} />
-      </Routes>
-
-
-
       <div>
-      <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow p-4 mb-6">
-        <h1 className="text-2xl font-bold">MotoGP Results</h1>
-      </header>
+        <Navbar />
 
-      <main className="container mx-auto px-4">
-        {/* Pass the season you want to display */}
-        <MotoGPTable season="2025" />
-      </main>
-    </div>
-      </div>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+        <div className='pt-16'>
+          <Routes>
+            <Route path="/" element={<h2>Welcome to MotoGP Info</h2>} />
+            <Route path="/riders" element={<h2>Riders</h2>} />
+            <Route path="/Login" element={<Login />} />
+            {/* <Route path="/Signup" element={<SignUp />} /> */}
+            <Route path="/enter-results" element={<RaceEntryPage />} />
+          </Routes>
+          <div>
+            <div className="min-h-screen bg-gray-50">
+              <header className="bg-white shadow p-4 mb-6">
+                <h1 className="text-2xl font-bold">MotoGP Results</h1>
+              </header>
+              <main className="container mx-auto px-4">
+              {/* Pass the season you want to display */}
+                <MotoGPTable season="2025" />
+              </main>
+            </div>
+          </div>
+        
+        </div>
       </div>
     </>
   )
