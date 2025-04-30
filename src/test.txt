@@ -1,0 +1,101 @@
+// useMotoGPData.tsx
+import { useEffect, useState, useMemo } from 'react';
+import {
+  getFirestore, doc, getDoc,
+  collection, getDocs
+} from 'firebase/firestore';
+import type {
+  RaceMeta, RiderRaw, Rider, TeamConfig, Manufacturer
+} from './models';
+
+type SortKey =
+  | { type: 'championship' }
+  | { type: 'race'; raceId: string; metric: 'sprint' | 'gp' | 'points' }
+  | { type: 'rider'; field: 'name' | 'teamName' | 'manufacturerName' };
+
+export function useMotoGPData(
+  seasonYear: string,
+  initialSortKey: SortKey = { type: 'championship' }
+) {
+  const [seasonRaces, setSeasonRaces]     = useState<RaceMeta[]>([]);
+  const [teamConfigs, setTeamConfigs]     = useState<Record<string,TeamConfig>>({});
+  const [manufacturers, setManufacturers] = useState<Record<string,Manufacturer>>({});
+  const [rawRiders, setRawRiders]         = useState<RiderRaw[]>([]);
+  const [sortKey, setSortKey]             = useState<SortKey>(initialSortKey);
+
+  useEffect(() => {
+    const db = getFirestore();
+    (async () => {
+      // 1) fetch season doc for races
+      const seasonSnap = await getDoc(doc(db, 'seasons', seasonYear));
+      const seasonData = seasonSnap.data()!;
+      setSeasonRaces(seasonData.races as RaceMeta[]);
+
+      // 2) fetch teamConfigs
+      const teamSnap = await getDocs(collection(db, 'seasons', seasonYear, 'teamConfigs'));
+      const tc: Record<string,TeamConfig> = {};
+      teamSnap.forEach(d => tc[d.id] = d.data() as TeamConfig);
+      setTeamConfigs(tc);
+
+      // 3) fetch manufacturers
+      const mfrSnap = await getDocs(collection(db, 'manufacturers'));
+      const mfs: Record<string,Manufacturer> = {};
+      mfrSnap.forEach(d => mfs[d.id] = { id: d.id, ...(d.data() as any) });
+      setManufacturers(mfs);
+
+      // 4) fetch riderResults
+      const riderSnap = await getDocs(collection(db, 'seasons', seasonYear, 'riderResults'));
+      const riders: RiderRaw[] = [];
+      riderSnap.forEach(d => riders.push({ id: d.id, ...(d.data() as any) }));
+      setRawRiders(riders);
+    })();
+  }, [seasonYear]);
+
+  // 5) enrich with championship & lookups
+  const enriched = useMemo<Rider[]>(() => {
+    // compute totalPoints for each rider
+    const withTotals = rawRiders.map(r => {
+      const total = Object.values(r.raceResults || {})
+        .reduce((sum, rr) => sum + (rr.points||0), 0);
+      return { ...r, totalPoints: total };
+    });
+
+    // assign championship positions
+    const sortedByPoints = [...withTotals].sort((a,b) => b.totalPoints - a.totalPoints);
+    const withChamp = sortedByPoints.map((r, i) => ({
+      ...r,
+      championship: { position: i + 1, points: r.totalPoints }
+    }));
+
+    // build final array of Rider
+    return withChamp.map(r => ({
+      id:              r.id,
+      name:            r.name,
+      number:          r.number,
+      teamId:          r.teamId,
+      manufacturerId:  r.manufacturerId,
+      raceResults:     r.raceResults,
+      championship:    r.championship,
+      teamName:        teamConfigs[r.teamId]?.name       || 'Unknown',
+      manufacturerName:manufacturers[r.manufacturerId]?.name || 'Unknown',
+    }));
+  }, [rawRiders, teamConfigs, manufacturers]);
+
+  // 6) apply current sort
+  const sorted = useMemo(() => {
+    return [...enriched].sort((a, b) => {
+      switch (sortKey.type) {
+        case 'championship':
+          return a.championship.position - b.championship.position;
+        case 'race':
+          const A = a.raceResults[sortKey.raceId]?.[sortKey.metric] ?? Infinity;
+          const B = b.raceResults[sortKey.raceId]?.[sortKey.metric] ?? Infinity;
+          return A - B;
+        case 'rider':
+          return a[sortKey.field].localeCompare(b[sortKey.field]);
+      }
+    });
+  }, [enriched, sortKey]);
+
+  return { seasonRaces, riders: sorted, sortKey, setSortKey };
+}

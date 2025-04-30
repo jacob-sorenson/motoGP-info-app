@@ -7,6 +7,7 @@ import { SignUp } from './pages/SignUp/_SignUp'
 // remove eventually
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import { MotoGPTable } from './components/MotoGPTable'
 
 function App() {
 
@@ -24,6 +25,20 @@ function App() {
         <Route path="/Signup" element={<SignUp />} />
       </Routes>
 
+
+
+      <div>
+      <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow p-4 mb-6">
+        <h1 className="text-2xl font-bold">MotoGP Results</h1>
+      </header>
+
+      <main className="container mx-auto px-4">
+        {/* Pass the season you want to display */}
+        <MotoGPTable season="2025" />
+      </main>
+    </div>
+      </div>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
